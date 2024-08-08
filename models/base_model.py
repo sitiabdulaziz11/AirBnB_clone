@@ -7,7 +7,8 @@ class BaseModel:
     """
     
     def __init__(self, *args, **kwargs):
-        # Initialize id, created_at, updated_at
+        """Initialize a new BaseModel instance with id, created_at, updated_at
+        """
         if not kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -18,9 +19,9 @@ class BaseModel:
                 if key == "id":
                     self.id = value
                 elif key == "created_at":   
-                    self.created_at = datetime.fromisoformat(self.created_at)
+                    self.created_at = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 elif key == "updated_at":
-                    self.updated_at = datetime.fromisoformat(self.updated_at)
+                    self.updated_at = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 elif key == "__class__":
                     continue
                 else:
