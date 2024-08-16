@@ -43,8 +43,10 @@ class FileStorage:
                     class_name = key.split('.')[0]
                     
                     from models.base_model import BaseModel
+                    from models.user import User
                     class_mapping = {
                         "BaseModel": BaseModel,
+                        "User": User
                         # Add other models here
                     }
                     if class_name in class_mapping:
