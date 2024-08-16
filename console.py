@@ -13,13 +13,11 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, line):
         """Quit command to exit the program.
         """
-        
         return True
     
     def do_quit(self, line):
         """Quit command to exit the program.
         """
-        
         return True
     
     def emptyline(self) -> bool:
@@ -28,12 +26,18 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, user_input):
         """Creates a new instance of BaseModel, saves it, and prints the id.
         """
-        class_name = user_input.split()
+        args = user_input.split()
         
         if not user_input:
             print("** class name missing **")
-        elif user_input != "BaseModel":
-            print("** class doesn't exist **")
+            return
+        
+        class_name = args[0]
+        class_names_in_storage = {key.split('.')[0]for key in storage.all().keys()}
+        if class_name not in class_names_in_storage:
+                print("** class doesn't exist **")
+                return
+        
         else:
             new_instance = BaseModel()
             new_instance.save()
@@ -47,11 +51,14 @@ class HBNBCommand(cmd.Cmd):
         
         if not user_input or len(args) == 0:
             print('** class name missing **')
+            
         # elif user_input or args[0] != "BaseModel":
-        elif args[0] != "BaseModel":
+        elif args[0] not in globals():
             print("** class doesn't exist **")
+            
         elif len(args) == 1:
             print("** instance id missing **")
+            
         else:
             class_name = args[0]
             isinstance_id = args[1]
@@ -67,14 +74,22 @@ class HBNBCommand(cmd.Cmd):
         """
         args = user_input.split()
         
-        if not user_input:
+        if len(args) == 0:
             print('** class name missing **')
-        elif user_input != "BaseModel":
-            print("** class doesn't exist **")
-        elif len(args) == 1:
+            return
+        
+        class_name = args[0]
+        class_names_in_storage = {key.split('.')[0]for key in storage.all().keys()}
+        if class_name not in class_names_in_storage:
+                print("** class doesn't exist **")
+                return
+        # elif args[0] not in globals():
+        # elif args[0] != "BaseModel":
+        #     print("** class doesn't exist **")
+        
+        if len(args) == 1:
             print("** instance id missing **")
         else:
-            class_name = args[0]
             isinstance_id = args[1]
             
             key = f"{class_name}.{isinstance_id}"
@@ -96,11 +111,12 @@ class HBNBCommand(cmd.Cmd):
             print(instances)
         else:
             class_name = args[0]
-            # if args[0] not in storage.all():
-            #     print("** class doesn't exist **")
-            if class_name not in globals():
-                print("** class doesn't exist **")
-                return
+            class_names_in_storage = {key.split('.')[0] for key in storage.all().keys()}
+
+            if class_name not in class_names_in_storage:
+            # if class_name not in globals(): this 3 work
+            # if user_input != "BaseModel":
+             print("** class doesn't exist **")
             else:
                 # Print all instances of the specified class
                 instances = [str(obj) for obj in storage.all().values() if type(obj).__name__ == class_name]
@@ -116,37 +132,52 @@ class HBNBCommand(cmd.Cmd):
         
         if len(args) == 0:
             print('** class name missing **')
-        elif args[0] not in storage.all():
+            return
+        
+        if args[0] not in globals():
             print("** class doesn't exist **")
+            return
+        
         elif len(args) == 1:
             print("** instance id missing **")
+            return
+        
         elif len(args) == 2:
             print("** attribute name missing **")
+            return
+        
         elif len(args) == 3:
             print("** value missing **")
+            return
       
         class_name = args[0]
         isinstance_id = args[1]
         
+        instance_id = args[1]
         key = f"{class_name}.{isinstance_id}"
         if key not in storage.all():
             print("** no instance found **")
+            return
             
+        attribute_name = args[2]
         attribute_value = ' '.join(args[3:]).strip('"')
-        isinstance = storage.all()[key]
+        instance = storage.all()[key]
+        
+        # print(f"Updating {attribute_name} of instance {instance_id} with value: {attribute_value}")  # Debug print
         
         # Handle type casting
-        if isinstance(attribute_value, str):
-            if attribute_value.isdigit():
-                attribute_value = int(attribute_value)
-            else:
+        if attribute_value.isdigit():
+            attribute_value = int(attribute_value)
+        else:
+            try:
                 attribute_value = float(attribute_value)
-
-        setattr(isinstance, args[2], attribute_value)
+            except ValueError:
+                pass
+        setattr(instance, attribute_name, attribute_value)
         storage.save()
+        # print(f"Instance {instance_id} updated successfully.")  # Success print
         
-                
-    
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop(
         # "Welcome to the HBNB command interpreter. Type help or ? to list commands.\n"
