@@ -30,30 +30,31 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, user_input):
         """Creates a new instance of BaseModel, saves it, and prints the id.
         """
-        if not user_input:
+        
+        args = user_input.split()
+        if not args:
             print("** class name missing **")
-        else:
-            if user_input in classes:
-                b1 = eval(user_input  + "()")
-                b1.save()
-                print(b1.id)
-            else:
-                print("** class doesn't exist **")
+            return
         
-    #     args = user_input.split()
-    #     if not args:
-    #         print("** class name missing **")
-    #         return
+        class_name = args[0]
         
-    #     class_name = args[0]
-    #     
-    #     if class_name not in classes:
-    #         print("** class doesn't exist **")
-    #         return
+        if class_name not in classes:
+            print("** class doesn't exist **")
+            return
     
-    #     new_instance = classes[class_name]()
-    #     new_instance.save()
-    #     print(new_instance.id)
+        new_instance = classes[class_name]()
+        new_instance.save()
+        print(new_instance.id)
+        
+        # if not user_input:
+        #     print("** class name missing **")
+        # else:
+        #     if user_input in classes:
+        #         b1 = eval(user_input  + "()")
+        #         b1.save()
+        #         print(b1.id)
+        #     else:
+        #         print("** class doesn't exist **")
             
     def do_show(self, user_input):
         """Prints the string representation of an instance based on the class
@@ -191,6 +192,4 @@ class HBNBCommand(cmd.Cmd):
         
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop(
-        # "Welcome to the HBNB command interpreter. Type help or ? to list commands.\n"
-    )
+    HBNBCommand().cmdloop()
