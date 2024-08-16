@@ -45,16 +45,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = classes[class_name]()
         new_instance.save()
         print(new_instance.id)
-        
-        # if not user_input:
-        #     print("** class name missing **")
-        # else:
-        #     if user_input in classes:
-        #         b1 = eval(user_input  + "()")
-        #         b1.save()
-        #         print(b1.id)
-        #     else:
-        #         print("** class doesn't exist **")
             
     def do_show(self, user_input):
         """Prints the string representation of an instance based on the class
@@ -192,4 +182,4 @@ class HBNBCommand(cmd.Cmd):
         
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+    HBNBCommand().cmdloop() # "Welcome to the HBNB command interpreter. Type help or ? to list commands.\n"
