@@ -28,20 +28,23 @@ class HBNBCommand(cmd.Cmd):
         """
         args = user_input.split()
         
-        if not user_input:
+        if not args:
             print("** class name missing **")
             return
         
         class_name = args[0]
-        class_names_in_storage = {key.split('.')[0]for key in storage.all().keys()}
-        if class_name not in class_names_in_storage:
-                print("** class doesn't exist **")
-                return
         
-        else:
-            new_instance = BaseModel()
-            new_instance.save()
-            print(new_instance.id)
+        classes = {
+        "BaseModel": BaseModel,
+        # Add other class mappings here
+    }
+        if class_name not in classes:
+            print("** class doesn't exist **")
+            return
+    
+        new_instance = classes[class_name]()
+        new_instance.save()
+        print(new_instance.id)
             
     def do_show(self, user_input):
         """Prints the string representation of an instance based on the class
