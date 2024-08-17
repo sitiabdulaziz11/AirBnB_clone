@@ -2,6 +2,14 @@
 
 import json
 import os
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 class FileStorage:
     """ FileStorage class
@@ -27,50 +35,22 @@ class FileStorage:
             json.dump(json_objects, f) #  writes the json_objects
             # dictionary to the file f in JSON format
             # f: The file object where the JSON data will be written which is file.json.
+           
         
-    
     def reload(self) -> None:
         """" Deserializes the JSON file to __objects
         """
-        try:
-            with open(self.__file_path, 'r') as f:
+        try:  
+            with open(self.__file_path, 'r') as f:  # Open the JSON file in read mode ('r')
                 if os.path.getsize(self.__file_path) == 0:
-                    print("The JSON file is empty.")
-                    return
-                
-                json_objects = json.load(f)
-                for key, obj_dict in json_objects.items():  # Extract the class name from the key
-                    class_name = key.split('.')[0]
+                        print("The JSON file is empty.")
+                        return
                     
-                    from models.base_model import BaseModel
-                    from models.user import User
-                    class_mapping = {
-                        "BaseModel": BaseModel,
-                        "User": User
-                        # Add other models here
-                    }
-                    if class_name in class_mapping:
-                        self.__objects[key] = class_mapping[class_name](**obj_dict)
-                    else:
-                        print(f"Class {class_name} not found.")
+                if os.path.getsize(self.__file_path) != 0:
+                    json_objects = json.load(f) # Load the JSON content from the file
+                    for key, obj_dict in json_objects.items(): # Extract the class name from the key
+                        class_name = key.split('.')[0]  
+                        self.__objects[key] = globals() [class_name](**obj_dict) # Instantiate the object using the dictionary
         except (FileNotFoundError, json.JSONDecodeError):
-            pass # If the file is not found, do nothing (pass)
-           
-        
-    # def reload(self) -> None:
-    #     """" Deserializes the JSON file to __objects
-    #     """
-    #     try:  # Open the JSON file in read mode ('r')
-    #         with open(self.__file_path, 'r') as f:  # Load the JSON content from the file
-    #             if os.path.getsize(self.__file_path) == 0:
-    #                     print("The JSON file is empty.")
-    #                     return
-                    
-    #             if os.path.getsize(self.__file_path) != 0:
-    #                 json_objects = json.load(f)
-    #                 for key, obj_dict in json_objects.items(): # Extract the class name from the key
-    #                     class_name = key.split('.')[0]  
-    #                     self.__objects[key] = globals() [class_name](**obj_dict) # Instantiate the object using the dictionary
-    #                     # self.__objects[key] = obj_dict
-    #     except (FileNotFoundError, json.JSONDecodeError):
-    #         pass # If the file is not found, do nothing (pass)
+            pass  # If the file is not found
+

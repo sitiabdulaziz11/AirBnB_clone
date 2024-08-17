@@ -1,13 +1,23 @@
 #!/usr/bin/python3
 
 import cmd
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
-from models import storage
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
     
 classes = {
         "BaseModel": BaseModel,
-        "User": User
+        "User": User,
+        "Amenity": Amenity,
+        "City": City,
+        "Place": Place,
+        "Review": Review,
+        "State": State
         # Add other class mappings here
     }
 
@@ -181,6 +191,15 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         storage.save()
         # print(f"Instance {instance_id} updated successfully.")  # Success print
+    
+    def default(self, user_input: str) -> None:
+        """Handle unrecognized or default behavior for unknown commands
+        """
+
+        if user_input.endswith(".all()"):
+            class_name = user_input.split(".")[0]
+            self.do_all(class_name)
+        
         
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 from .base_model import BaseModel
 
 class User(BaseModel):
-    """User class that inherits from BaseModel
+    """User class
     """
     email = ""
     password = ""
@@ -12,9 +12,5 @@ class User(BaseModel):
         """Initialize a new user
         """
         
-        super().__init__(*args, **kwargs)
-        self.email = ""
-        self.password = ""
-        self.first_name = ""
-        self.last_name = ""
-        
+        super().__init__(self, *args, **kwargs)
+         
