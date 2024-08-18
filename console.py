@@ -99,10 +99,7 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in globals():
                 print("** class doesn't exist **")
                 return
-        
-        # elif args[0] != "BaseModel":
-        #     print("** class doesn't exist **")
-        
+            
         if len(args) == 1:
             print("** instance id missing **")
         else:
@@ -201,6 +198,29 @@ class HBNBCommand(cmd.Cmd):
             class_name = user_input.split(".")[0]
             self.do_all(class_name)
         
+        # elif len(args) == 2 and args[1] == "count()":
+        elif user_input.endswith(".count()"):
+            class_name = user_input.split(".")[0]
+            count = 0
+            for obj in storage.all().values():
+                # if type(obj).__name__ == class_name:
+                if obj.__class__.__name__ == class_name:
+                    count += 1
+            print(count)
+        
+        if ".show(" in user_input and user_input.endswith(")"):
+            try:
+                # Split input to get class name and command with ID
+                class_name, rest = user_input.split(".", 1)
+                command = rest.strip(")")
+                if command.startswith("show("):
+                    # Extract ID from the command
+                    instance_id = command[5:].strip('"')
+                    # Pass class name and ID to do_show
+                    self.do_show(f"{class_name} {instance_id}")
+            except ValueError:
+                print("** Invalid command **")
+            
         
 
 if __name__ == "__main__":
