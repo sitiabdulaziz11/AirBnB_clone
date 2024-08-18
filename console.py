@@ -94,11 +94,12 @@ class HBNBCommand(cmd.Cmd):
             return
         
         class_name = args[0]
-        class_names_in_storage = {key.split('.')[0]for key in storage.all().keys()}
-        if class_name not in class_names_in_storage:
+        # class_names_in_storage = {key.split('.')[0]for key in storage.all().keys()} used to check classes in storage
+        # if class_name not in classes: # to check classes in the actual class definitions
+        if args[0] not in globals():
                 print("** class doesn't exist **")
                 return
-        # elif args[0] not in globals():
+        
         # elif args[0] != "BaseModel":
         #     print("** class doesn't exist **")
         
