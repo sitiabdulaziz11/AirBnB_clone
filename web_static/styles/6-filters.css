@@ -1,3 +1,32 @@
+.popover {
+    display: none; /* Hidden by default */
+    background-color: #FAFAFA;
+    border: 1px solid #DDDDDD; /* border line of the dropdown*/
+    border-radius: 4px;
+    list-style: none; /*  no list display*/
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute; /*a*/
+    top: 70px; /*a*/
+    left: 0px; /*a, this 3 a lines Indent cities under states */
+    z-index: 10;
+}
+
+.popover ul {
+    list-style: none; /* Remove bullets */
+    /*padding-left: 20px; 
+    margin: 0;*/
+    
+}
+
+.popover li {
+    list-style-type: none;
+    padding-left: 10px;
+  }
+
+.locations:hover .popover, .amenities:hover .popover {
+    display: block; /* Display dropdown on hover */
+}
 
 .filters {
     background-color: white;
@@ -7,7 +36,6 @@
     border-radius: 4px;
     position: relative;  /* used to make button inside the section border line*/
     display: flex; /*Arrange children (aminity, loacation and button) in a row */
-
 }
 
 button{
@@ -28,14 +56,26 @@ button:hover {
     opacity: 0.9;
 }
 
-.locations, .amenities {
+.locations, .amenities { 
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    padding: 1px 40px; /* Add some padding to avoid text touching the edges */ 
     width: 25%;
-    padding-left: 10px; /* Add some padding to avoid text touching the edges */  
+    text-align: left;
+    position: relative; /* makes list of item to fit in the section of the box with its width. */
 }
 
 .locations {
     border-right: 1px solid #DDDDDD;
+}
+
+.popover h2 {
+    font-size: 16px;
+     margin: 0px;
+
 }
 
  h3 {
