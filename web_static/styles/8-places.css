@@ -85,3 +85,14 @@ h1 {
     padding-top: 8px;
     /* margin-bottom: 30px; */
 }
+
+.user {
+    font-size: 18px;
+    /* font-weight: bold; */  /* Makes the text bold */
+}
+
+.description {
+    width: 100%;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
