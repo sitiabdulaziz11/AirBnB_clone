@@ -112,6 +112,16 @@ class HBNBCommand(cmd.Cmd):
                 del storage.all()[key]
                 storage.save()
     
+    def do_State(self, user_input):
+        """Prints the string representation of an instance based on the class"""
+        
+        args = user_input.split( )
+        if args:
+        # elif user_input or args[0] != "BaseModel":
+            if args[0] == "State":
+                instances = [str(obj) for obj in storage.all().values()]
+                print(instances)
+    
     def do_all(self, user_input):
         """Prints all string representation of all instances based or not only
         on the class name
